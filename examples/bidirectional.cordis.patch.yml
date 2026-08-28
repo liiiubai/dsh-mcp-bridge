@@ -1,0 +1,36 @@
+# 双向使用：把 DSH 变成 MCP 生态的一员
+#
+# 本仓库的 dsh-mcp-bridge 把 DSH 暴露为 MCP Server（能力输出）；
+# 反向（把第三方 MCP Server 挂进 DSH）由官方 @deepseek-ai/dsh-mcp-client
+# 提供，一行配置即可。二者互补，组成完整的 DSH ↔ MCP 双向桥接。
+#
+# 安装官方 client（dsh 内置包，无需额外安装）后，在 profile 的
+# cordis.patch.yml 里追加：
+#
+# ```yaml
+# - insert:
+#     - id: mcp-github
+#       name: '@deepseek-ai/dsh-mcp-client'
+#       config:
+#         serverName: github
+#         transport: stdio
+#         command: npx
+#         args: ['-y', '@modelcontextprotocol/server-github']
+#         env:
+#           GITHUB_TOKEN: !!js process.env.GITHUB_TOKEN
+#
+#     - id: mcp-filesystem
+#       name: '@deepseek-ai/dsh-mcp-client'
+#       config:
+#         serverName: fs
+#         transport: stdio
+#         command: npx
+#         args: ['-y', '@modelcontextprotocol/server-filesystem', '/workspace']
+# ```
+#
+# 之后 DSH 的模型会看到 mcp__github__*、mcp__fs__* 原生工具，
+# 与 dsh-mcp-bridge 暴露的 dsh_* 工具并存。
+#
+# 组合效果：
+#   Claude Code ──HTTP──▶ dsh-mcp-bridge ──▶ DSH 工具（read/glob/grep/web_search）
+#   DSH 模型     ──stdio──▶ mcp-client ──▶ 任意第三方 MCP Server（GitHub/filesystem/…）

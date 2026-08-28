@@ -1,0 +1,14 @@
+# dsh-mcp-bridge bundle 挂载层。
+# 安装：dsh plugin --profile <name> add ./mcp-bridge
+- insert:
+    - id: mcp-bridge
+      name: 'dsh-mcp-bridge'
+      config:
+        # MCP 端点路径（外部客户端连接 URL 为 http://<host>:<port><path>）
+        path: /mcp
+        # 暴露给 MCP 客户端的 DSH 工具白名单（只读优先）
+        allowlist:
+          - read
+          - glob
+          - grep
+          - web_search

@@ -1,0 +1,41 @@
+{
+  "name": "dsh-mcp-bridge",
+  "version": "0.1.0",
+  "description": "Expose DeepSeek Harness tools as a standard MCP server (streamable HTTP) — drive dsh from Claude Code, Codex, or any MCP client. 把 DSH 工具集暴露为标准 MCP Server。",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./server": "./src/server.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node tests/run-all.js",
+    "test:protocol": "node .mcp-test/verify-server.mjs",
+    "demo": "node .mcp-test/e2e-repo.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "mcp",
+    "model-context-protocol",
+    "dsh-plugin",
+    "plugin",
+    "bridge"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  }
+}
