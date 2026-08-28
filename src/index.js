@@ -22,11 +22,15 @@ import { findScopedTools, callDshTool } from './dsh.js'
 
 export const name = 'dsh-mcp-bridge'
 
+// 硬依赖：webServer（挂载 /mcp 路由）与 tools（枚举/执行工具）是
+// host composition 的常驻服务。用 inject 声明而非 ctx.get——loader
+// 挂载 bundle 行时服务可能尚未注册，ctx.get 会在 apply 时静默返回
+// undefined 导致行"成功但不贡献"（whale-widget 即用此模式）。
+export const inject = ['webServer', 'tools']
+
 export function apply(ctx, config = {}) {
-  const webServer = ctx.get('webServer')
-  if (webServer === undefined) return
-  const tools = ctx.get('tools')
-  if (tools === undefined) return
+  const webServer = ctx.webServer
+  const tools = ctx.tools
 
   const path = config.path ?? '/mcp'
   const allowlist = config.allowlist ?? DEFAULT_ALLOWLIST

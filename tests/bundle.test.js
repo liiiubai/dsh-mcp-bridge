@@ -24,9 +24,10 @@ function makeMockCtx() {
     routes,
     tools,
     ctx: {
+      // inject 声明后 apply 直接读属性；其余服务走 ctx.get
+      webServer: { register: (route) => { routes.push(route); return () => {} } },
+      tools,
       get(name) {
-        if (name === 'webServer') return { register: (route) => { routes.push(route); return () => {} } }
-        if (name === 'tools') return tools
         if (name === 'agents') return agents
         return undefined
       },
