@@ -102,8 +102,9 @@ The bridge enumerates tools through the agent-scope view of `ctx.tools` (agents 
 ## Development
 
 ```sh
-npm test          # node:test, zero dependencies (27 tests)
-npm run demo      # e2e: repo code + official MCP SDK client
+npm test          # node:test, zero dependencies (38 tests)
+npm run demo      # live demo against a running DSH at http://127.0.0.1:3080/mcp
+npm run demo:mock # e2e: repo code + official MCP SDK client (no DSH needed)
 ```
 
 Layout:

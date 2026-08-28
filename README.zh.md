@@ -102,8 +102,9 @@ MCP 客户端 ──streamable HTTP──▶ /mcp（webServer 路由）
 ## 开发
 
 ```sh
-npm test          # node:test，零依赖（27 个用例）
-npm run demo      # e2e：仓库代码 + 官方 MCP SDK 客户端
+npm test          # node:test，零依赖（38 个用例）
+npm run demo      # 对本机运行中的 DSH 现场演示（http://127.0.0.1:3080/mcp）
+npm run demo:mock # e2e：仓库代码 + 官方 MCP SDK 客户端（无需 DSH）
 ```
 
 目录结构：

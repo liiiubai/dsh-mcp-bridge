@@ -23,7 +23,8 @@
   "scripts": {
     "test": "node tests/run-all.js",
     "test:protocol": "node .mcp-test/verify-server.mjs",
-    "demo": "node .mcp-test/e2e-repo.mjs"
+    "demo": "node .mcp-test/demo.mjs",
+    "demo:mock": "node .mcp-test/e2e-repo.mjs"
   },
   "keywords": [
     "dsh",

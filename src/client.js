@@ -40,32 +40,45 @@ export function apply(ctx) {
         React.createElement('div', { style: { fontWeight: 600, marginBottom: 8 } }, title),
         body)
 
+      // ---- 服务器状态卡片 ----
       const rows = [
         ['Endpoint', status ? status.path : '—'],
         ['Protocol', status ? status.protocolVersion : '—'],
         ['Exposed tools', status ? String(status.toolCount) : '—'],
       ]
+      const serverCard = card('Server',
+        React.createElement('table', { style: { borderCollapse: 'collapse' } },
+          React.createElement('tbody', null,
+            rows.map(([k, v]) => React.createElement('tr', { key: k },
+              React.createElement('td', { style: { padding: '4px 12px 4px 0', color: 'var(--dsh-color-text-secondary)' } }, k),
+              React.createElement('td', { style: { padding: '4px 0', fontFamily: 'monospace' } }, v))))))
 
-      return React.createElement('div', null,
-        card('Server',
-          React.createElement('table', { style: { borderCollapse: 'collapse' } },
-            React.createElement('tbody', null,
-              rows.map(([k, v]) => React.createElement('tr', { key: k },
-                React.createElement('td', { style: { padding: '4px 12px 4px 0', color: 'var(--dsh-color-text-secondary)' } }, k),
-                React.createElement('td', { style: { padding: '4px 0', fontFamily: 'monospace' } }, v))))),
-        card('Connectivity',
-          React.createElement('div', null,
-            React.createElement('button', { onClick: runPing, style: { padding: '4px 12px', cursor: 'pointer' } }, 'Run self-test (ping)'),
-            ping !== null ? React.createElement('pre', { style: { marginTop: 8, fontSize: 12 } }, String(ping)) : null)),
-        card('Tools',
-          status && status.tools && status.tools.length > 0
-            ? React.createElement('ul', { style: { margin: 0, paddingLeft: 18 } },
-                status.tools.map((t) => React.createElement('li', { key: t.name },
-                  React.createElement('code', null, t.name),
-                  t.description ? React.createElement('span', { style: { color: 'var(--dsh-color-text-secondary)', marginLeft: 8 } }, t.description) : null)))
-            : React.createElement('div', { style: { color: 'var(--dsh-color-text-secondary)' } }, status ? 'No tools exposed (allowlist empty?)' : 'Loading…')),
-        error ? React.createElement('div', { style: { color: 'var(--dsh-color-danger, red)' } }, String(error)) : null,
-        React.createElement('button', { onClick: load, style: { padding: '4px 12px', cursor: 'pointer' } }, 'Reload'))
+      // ---- 连通性自测卡片 ----
+      const pingButton = React.createElement('button', { onClick: runPing, style: { padding: '4px 12px', cursor: 'pointer' } }, 'Run self-test (ping)')
+      const pingResult = ping !== null ? React.createElement('pre', { style: { marginTop: 8, fontSize: 12 } }, String(ping)) : null
+      const connectivityCard = card('Connectivity', React.createElement('div', null, pingButton, pingResult))
+
+      // ---- 工具列表卡片 ----
+      let toolsBody
+      if (status && status.tools && status.tools.length > 0) {
+        toolsBody = React.createElement('ul', { style: { margin: 0, paddingLeft: 18 } },
+          status.tools.map((t) => {
+            const description = t.description
+              ? React.createElement('span', { style: { color: 'var(--dsh-color-text-secondary)', marginLeft: 8 } }, t.description)
+              : null
+            return React.createElement('li', { key: t.name }, React.createElement('code', null, t.name), description)
+          }))
+      } else {
+        toolsBody = React.createElement('div', { style: { color: 'var(--dsh-color-text-secondary)' } },
+          status ? 'No tools exposed (allowlist empty?)' : 'Loading…')
+      }
+      const toolsCard = card('Tools', toolsBody)
+
+      // ---- 组装 ----
+      const errorNode = error ? React.createElement('div', { style: { color: 'var(--dsh-color-danger, red)' } }, String(error)) : null
+      const reloadButton = React.createElement('button', { onClick: load, style: { padding: '4px 12px', cursor: 'pointer' } }, 'Reload')
+
+      return React.createElement('div', null, serverCard, connectivityCard, toolsCard, errorNode, reloadButton)
     },
   ))
 }
