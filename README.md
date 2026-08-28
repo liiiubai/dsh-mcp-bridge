@@ -1,5 +1,9 @@
 # dsh-mcp-bridge
 
+[![CI](https://img.shields.io/github/actions/workflow/status/liiiubai/dsh-mcp-bridge/test.yml)](https://github.com/liiiubai/dsh-mcp-bridge/actions)
+[![License](https://img.shields.io/github/license/liiiubai/dsh-mcp-bridge)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/liiiubai/dsh-mcp-bridge)](https://github.com/liiiubai/dsh-mcp-bridge)
+
 > Expose DeepSeek Harness tools as a standard **MCP Server** — drive `dsh` from Claude Code, Codex, OpenClaw, or any MCP-compatible client.
 
 `dsh-mcp-bridge` turns your running DeepSeek Harness into a Model Context Protocol server over **streamable HTTP**. Any MCP client can discover and call the real DSH tools (file read, glob, grep, web search…) through a **safe allowlist** — while your workspace keeps DSH's own sandbox and approval pipeline on every call.
