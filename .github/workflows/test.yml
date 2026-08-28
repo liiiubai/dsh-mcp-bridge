@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install dev dependencies (MCP SDK for e2e)
+        run: npm install --no-audit --no-fund
       - name: Run test suite
         run: npm test
       - name: Run e2e (mock server + official MCP SDK)
