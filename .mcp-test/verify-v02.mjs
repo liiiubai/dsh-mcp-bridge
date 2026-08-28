@@ -1,6 +1,14 @@
 // v0.2 验证：真实 DSH 工具转发（官方 SDK 客户端）
-import { Client } from 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js'
-import { StreamableHTTPClientTransport } from 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js'
+const LOCAL_SDK_ESM = 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm'
+async function loadSdkModule(pkgSpecifier, localSuffix) {
+  try {
+    return await import(pkgSpecifier)
+  } catch {
+    return await import(`${LOCAL_SDK_ESM}/${localSuffix}`)
+  }
+}
+const { Client } = await loadSdkModule('@modelcontextprotocol/sdk/client/index.js', 'client/index.js')
+const { StreamableHTTPClientTransport } = await loadSdkModule('@modelcontextprotocol/sdk/client/streamableHttp.js', 'client/streamableHttp.js')
 
 async function main() {
   const transport = new StreamableHTTPClientTransport(new URL('http://127.0.0.1:3080/mcp'))

@@ -26,6 +26,9 @@
     "demo": "node .mcp-test/demo.mjs",
     "demo:mock": "node .mcp-test/e2e-repo.mjs"
   },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  },
   "keywords": [
     "dsh",
     "deepseek-harness",

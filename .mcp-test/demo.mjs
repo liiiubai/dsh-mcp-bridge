@@ -1,8 +1,16 @@
 // 自动演示脚本：连接本机 DSH 的 MCP 端点，演示完整能力。
 // 用法：node .mcp-test/demo.mjs [url]   （默认 http://127.0.0.1:3080/mcp）
 // 输出可直接用于录屏 / 发布素材。
-import { Client } from 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js'
-import { StreamableHTTPClientTransport } from 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js'
+const LOCAL_SDK_ESM = 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm'
+async function loadSdkModule(pkgSpecifier, localSuffix) {
+  try {
+    return await import(pkgSpecifier)
+  } catch {
+    return await import(`${LOCAL_SDK_ESM}/${localSuffix}`)
+  }
+}
+const { Client } = await loadSdkModule('@modelcontextprotocol/sdk/client/index.js', 'client/index.js')
+const { StreamableHTTPClientTransport } = await loadSdkModule('@modelcontextprotocol/sdk/client/streamableHttp.js', 'client/streamableHttp.js')
 
 const url = process.argv[2] ?? 'http://127.0.0.1:3080/mcp'
 

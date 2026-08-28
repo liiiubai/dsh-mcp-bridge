@@ -4,8 +4,18 @@ import http from 'node:http'
 import { createProtocol } from '../src/protocol.js'
 import { createHttpHandler } from '../src/transport.js'
 import { buildCatalog, DEFAULT_ALLOWLIST } from '../src/catalog.js'
-import { Client } from 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js'
-import { StreamableHTTPClientTransport } from 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js'
+
+// SDK 解析：优先包名（CI 安装 devDependencies），fallback 到本机 checkout 路径
+const LOCAL_SDK_ESM = 'file:///D:/my-code/deepseek-harness/packages/mcp/mcp-client/node_modules/@modelcontextprotocol/sdk/dist/esm'
+async function loadSdkModule(pkgSpecifier, localSuffix) {
+  try {
+    return await import(pkgSpecifier)
+  } catch {
+    return await import(`${LOCAL_SDK_ESM}/${localSuffix}`)
+  }
+}
+const { Client } = await loadSdkModule('@modelcontextprotocol/sdk/client/index.js', 'client/index.js')
+const { StreamableHTTPClientTransport } = await loadSdkModule('@modelcontextprotocol/sdk/client/streamableHttp.js', 'client/streamableHttp.js')
 
 // ---- mock DSH tools（模拟 agent scope 视图） ----
 const mockSchemas = [
